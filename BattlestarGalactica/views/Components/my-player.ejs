@@ -1,0 +1,36 @@
+<li class="list-group-item bg-transparent  bg-transparent ">
+  <!-- Player Section -->
+  <div class="row">
+    <div class="col">
+      <div class="border-bottom py-1 border-dark row">
+        <!-- Player Name -->
+        <div class="col-lg-6">
+          <h2><%= player.name %> (it's me)</h2>
+        </div>
+      </div>
+      <!-- Player Identity Cards -->
+      <div class="row my-2">
+        <% player.identityCards.forEach(function(card){ %>
+        <div class="col col-lg-4">
+          <%-include('identity-card', { "card": card}) %>
+
+          <div style="width: 18rem;">
+            <button class="btn mb-2 btn-info shadow btn-block">
+              Reveal
+            </button>
+          </div>
+        </div>
+        <% }); %>
+
+        <!-- Ask for cards -->
+        <div class="col my-auto col-lg-4">
+          <div class="mt-5 mb-2" style="width: 18rem;">
+            <button class="btn btn-danger shadow btn-block">
+              Execute
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

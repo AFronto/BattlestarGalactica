@@ -1,0 +1,55 @@
+<div class="container d-flex flex-column justify-content-start flex-fill">
+  <div class="row p-3 mt-auto mx-auto">
+    <form name="deal-form" method="POST" action="/deal-cards">
+      <div
+        class="card shadow bg-secondary"
+        style="width: 18rem; height: 19rem;"
+      >
+        <div class="card-header bg-primary ">
+          Deal Cards
+        </div>
+        <div class="card-body bg-dark  ">
+          This will automatically deal cards to all the users in your game.
+          <br /><br />
+          Only use this when the rules request it (at the beginning of the game
+          and at halfway).
+        </div>
+        <div class="card-body bg-dark">
+          <button class="btn btn-info shadow btn-block" type="submit">
+            Deal!
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row p-3 mt-2 mb-auto mx-auto">
+    <button
+      class="btn btn-danger shadow btn-block"
+      style="width: 18rem;"
+      onClick="finishGame()"
+    >
+      Finish Game!
+    </button>
+  </div>
+</div>
+
+<script>
+  function finishGame() {
+    fetch("/finish-game", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer" // no-referrer, *client
+    }).then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    });
+  }
+</script>

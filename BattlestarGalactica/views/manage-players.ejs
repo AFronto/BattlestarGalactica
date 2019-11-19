@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#222" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+
+    <title>Battlestar Galactica</title>
+  </head>
+
+  <body
+    class="d-flex flex-column h-100"
+    style="text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);"
+  >
+    <!-- Navigation Bar -->
+    <%- include('Components/navbar', { "links": links, "logOut": logOut}) %>
+
+    <!-- Page Content -->
+    <div class="container d-flex flex-column justify-content-start flex-fill">
+      <!-- Player Select Section Title -->
+      <h2 class="border-bottom py-2 border-dark">Available Players</h2>
+      <!-- Player Select Section Content -->
+      <ul class="list-group list-group-flush col-lg-6">
+        <% players.forEach(function(player){ %> <%- include('Components/player',
+        { "player": player, "edited": edited}) %> <% }); %>
+      </ul>
+      <div class="col-lg-6 p-0 m-0">
+        <button
+          class="btn btn-info shadow btn-block mt-5 mb-3"
+          onClick="createNew()"
+        >
+          Add new Player
+        </button>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function logOut() {
+        fetch("http://localhost:3000/logout").then(response => {
+          if (response.redirected) {
+            window.location.href = response.url;
+          }
+        });
+      }
+      function createNew() {
+        fetch("/manage-players", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json"
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: "follow", // manual, *follow, error
+          referrer: "no-referrer" // no-referrer, *client
+        }).then(response => {
+          if (response.redirected) {
+            window.location.href = response.url;
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

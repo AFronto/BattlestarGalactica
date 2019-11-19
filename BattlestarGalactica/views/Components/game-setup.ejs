@@ -1,0 +1,86 @@
+<div class="container d-flex flex-column justify-content-start flex-fill">
+  <form name="manage-game-form" method="POST" action="/start-game">
+    <div class="form-group">
+      <h2 class="border-bottom py-2 border-dark">Admin</h2>
+
+      <div class="row p-3">
+        <div class="card shadow bg-secondary" style="width: 18rem;">
+          <div class="card-header bg-primary ">
+            Select the Admin's identity
+          </div>
+          <div class="card-body bg-dark ">
+            <% players.forEach(function(player){ %>
+            <div class="radio">
+              <label
+                ><input type="radio" name="adminPlayer" <%if (players[0].id ===
+                player.id) {%> checked <%}%> value="<%= player.id %>" /> <%=
+                player.name %></label
+              >
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h2 class="border-bottom py-2 border-dark">Players</h2>
+
+      <div class="row p-3">
+        <div class="card shadow bg-secondary" style="width: 18rem;">
+          <div class="card-header bg-primary ">
+            Select the Players for the Game
+          </div>
+          <div class="card-body bg-dark ">
+            <% players.forEach(function(player){ %>
+            <div class="checkbox">
+              <label
+                ><input
+                  type="checkbox"
+                  name="players"
+                  value="<%= player.id %>"
+                />
+                <%= player.name %></label
+              >
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h2 class="border-bottom py-2 border-dark">Game Options</h2>
+
+      <div class="row p-3">
+        <div class="card shadow bg-secondary" style="width: 18rem;">
+          <div class="card-header bg-primary ">
+            Select the Card Packs for the Game
+          </div>
+          <div class="card-body bg-dark ">
+            <% cardPacks.forEach(function(cardPack){ %>
+            <div class="checkbox">
+              <label
+                ><input
+                  type="checkbox"
+                  name="cardpacks"
+                  value="<%= cardPack.id %>"
+                />
+                <%= cardPack.name %></label
+              >
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row p-3">
+      <div style="width: 18rem;">
+        <button class="btn btn-info shadow btn-block" type="submit">
+          Start the Game
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

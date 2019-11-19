@@ -1,0 +1,64 @@
+<li class="list-group-item bg-transparent ">
+  <!-- Player Section -->
+  <div class="row">
+    <div class="col">
+      <div class="border-bottom py-1 border-dark row">
+        <!-- Player Name -->
+        <div class="col-lg-6">
+          <h2><%= player.name %></h2>
+        </div>
+
+        <% if (player.wannaSee !== 'nothing') {%>
+        <!-- Show Card Question -->
+        <div class="col-lg-6">
+          <div class="row">
+            <h5 class="mx-3">
+              <%= player.name %> wants to see <% if (player.wannaSee ===
+              'random') {%><a class="text-warning font-weight-bold">one</a
+              ><%}else{%>
+              <a class="text-warning font-weight-bold">all</a>
+              <%}%> of your loyalties. Do you want to show <% if
+              (player.wannaSee === 'random') {%>it<%}else{%>them<%}%>?
+            </h5>
+            <div class="mx-auto">
+              <button class="btn btn-info shadow mx-2">
+                Show
+              </button>
+              <button class="btn btn-danger shadow mx-2">
+                Decline
+              </button>
+            </div>
+          </div>
+        </div>
+        <%}%>
+      </div>
+      <!-- Player Identity Cards -->
+      <div class="row my-2">
+        <!-- UnKnown Card -->
+        <% player.identityCards.forEach(function(card){ %>
+        <div class="col col-lg-4">
+          <% if (card.known) {%> <%-include('identity-card', { "card": card}) %>
+          <%} else {%> <%-include('unknown-card') %> <%}%>
+        </div>
+        <% }); %> <% if (player.identityCards.length<2) {%> <% for (var i=0;
+        i<2-player.identityCards.length; i++) {%>
+        <div class="col my-auto col-lg-4"></div>
+        <%}%> <%}%>
+
+        <!-- Ask for cards -->
+        <div class="col my-auto col-lg-4">
+          <div class="mt-5 mb-2" style="width: 18rem;">
+            <button class="btn btn-info shadow btn-block">
+              Ask for a Loyalty card
+            </button>
+          </div>
+          <div class="mb-2" style="width: 18rem;">
+            <button class="btn btn-success shadow btn-block">
+              Ask for all the Loyalty cards
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

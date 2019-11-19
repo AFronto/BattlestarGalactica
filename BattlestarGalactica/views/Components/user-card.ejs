@@ -1,0 +1,22 @@
+<div class="col d-flex justify-content-center my-5 mx-1">
+  <div class="card shadow bg-secondary" style="width: 18rem;">
+    <a
+      onClick=<%= user.onClick %>
+      class="btn shadow"
+      style="padding: 0;
+                     border: none;"
+    >
+      <div class="card-header bg-primary "><%= user.name %></div>
+      <div class="card-body bg-dark ">
+        <h2 class="card-Title d-flex justify-content-center my-auto">
+          Start Game
+        </h2>
+      </div>
+      <div class="card-body bg-dark ">
+        <p class="card-text">
+          You will be logged in as <%= user.name %> for a New Game
+        </p>
+      </div>
+    </a>
+  </div>
+</div>

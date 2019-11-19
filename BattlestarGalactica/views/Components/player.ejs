@@ -1,0 +1,88 @@
+<li class="list-group-item d-flex flex-row">
+  <%if (edited !== player.id) {%>
+  <h4 class="mr-auto"><%= player.name %></h4>
+  <button
+    class="btn btn-info shadow mr-3"
+    onClick="editMode('<%= player.id %>')"
+  >
+    Edit
+  </button>
+  <%} else {%>
+  <input
+    id="name"
+    type="text"
+    class="form-control mr-3"
+    name="name"
+    placeholder="<%= player.name %>"
+    value="<%= player.name %>"
+  />
+  <button class="btn btn-info shadow mr-3" onClick="save('<%= player.id %>')">
+    Save
+  </button>
+  <%}%>
+
+  <button
+    class="btn btn-danger shadow"
+    onClick="deletePlayer('<%= player.id %>')"
+  >
+    Delete
+  </button>
+</li>
+
+<script>
+  function editMode(playerId) {
+    fetch(`/edit-player/${playerId}`, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer" // no-referrer, *client
+    }).then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    });
+  }
+  function save(playerId) {
+    fetch(`/update-player/${playerId}`, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify({ newName: document.getElementById("name").value })
+    }).then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    });
+  }
+  function deletePlayer(playerId) {
+    fetch(`/delete-player/${playerId}`, {
+      method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer" // no-referrer, *client
+    }).then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    });
+  }
+</script>
