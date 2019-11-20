@@ -20,7 +20,10 @@
             </button>
           </div>
         </div>
-        <% }); %>
+        <% }); %> <% if (player.identityCards.length<2) {%> <% for (var i=0;
+        i<2-player.identityCards.length; i++) {%>
+        <div class="col my-auto col-lg-4"></div>
+        <%}%> <%}%>
 
         <!-- Ask for cards -->
         <div class="col my-auto col-lg-4">

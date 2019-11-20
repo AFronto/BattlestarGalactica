@@ -1,93 +1,52 @@
+const requireOption = require("../requireOption");
+
 module.exports = function(objectrepository) {
+  const Game = requireOption(objectrepository, "Game");
+  const Player = requireOption(objectrepository, "Player");
+
   return function(req, res, next) {
     const howManyCards = {
       ALL: "all",
       RANDOM: "random",
       NOTHING: "nothing"
     };
-
-    res.locals.myPlayer = {
-      name: req.session.player ? req.session.player : undefined,
-      identityCards: [
-        {
-          title: "Cylon 1",
-          img: "./images/poly/Cylon1.jpg",
-          desc: "The really long discription of this loyalty card"
-        },
-        {
-          title: "Human",
-          img: "./images/poly/Human.jpg",
-          desc: "The really long discription of this loyalty card"
+    if (objectrepository.gameStarted) {
+      Game.findOne({}).exec((err, game) => {
+        if (err || !game) {
+          res.locals.myPlayer = {};
+          return next(err);
         }
-      ]
-    };
-    res.locals.otherPlayers = [
-      {
-        name: "Other Player 1",
-        wannaSee: howManyCards.NOTHING,
-        identityCards: [
-          {
-            known: true,
-            title: "Human",
-            img: "./images/poly/Human.jpg",
-            desc: "The really long discription of this loyalty card"
-          },
-          {
-            known: true,
-            title: "Human",
-            img: "./images/poly/Human.jpg",
-            desc: "The really long discription of this loyalty card"
+
+        Player.find({ _id: { $in: game.players.map(p => p.player) } }).exec(
+          (err, players) => {
+            if (err || !players) {
+              return next(err);
+            }
+
+            res.locals.myPlayer = {
+              name: req.session.player
+                ? players.find(p => p.id === req.session.player).name
+                : undefined,
+              identityCards: []
+            };
+
+            res.locals.otherPlayers = players
+              .filter(p => p.id !== req.session.player)
+              .map(p => {
+                return {
+                  name: p.name,
+                  wannaSee: howManyCards.NOTHING,
+                  identityCards: []
+                };
+              });
+
+            return next();
           }
-        ]
-      },
-      {
-        name: "Other Player 2",
-        wannaSee: howManyCards.ALL,
-        identityCards: [
-          {
-            known: true,
-            title: "Human",
-            img: "./images/poly/Human.jpg",
-            desc: "The really long discription of this loyalty card"
-          },
-          {
-            known: false
-          },
-          {
-            known: false
-          }
-        ]
-      },
-      {
-        name: "Other Player 3",
-        wannaSee: howManyCards.RANDOM,
-        identityCards: [
-          {
-            known: true,
-            title: "Human",
-            img: "./images/poly/Human.jpg",
-            desc: "The really long discription of this loyalty card"
-          },
-          {
-            known: false
-          }
-        ]
-      },
-      {
-        name: "Other Player 4",
-        wannaSee: howManyCards.NOTHING,
-        identityCards: [
-          {
-            known: false
-          }
-        ]
-      },
-      {
-        name: "Other Player 5",
-        wannaSee: howManyCards.NOTHING,
-        identityCards: []
-      }
-    ];
-    next();
+        );
+      });
+    } else {
+      res.locals.myPlayer = {};
+      next();
+    }
   };
 };

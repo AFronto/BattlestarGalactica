@@ -64,6 +64,8 @@ module.exports = function(app) {
     objRepo.adminLoggedInState = false;
     objRepo.gameStarted = false;
     objRepo.loggedInUsers = [];
+
+    Game.remove({}).exec();
   }
 
   function setAdminLoggedInState(state) {

@@ -5,7 +5,7 @@ function initDB(objectrepository) {
   const Card = requireOption(objectrepository, "Card");
   const CardPack = requireOption(objectrepository, "CardPack");
 
-  console.log("DB init sterted...");
+  console.log("DB init started...");
   [
     {
       title: "Cylon Identities",

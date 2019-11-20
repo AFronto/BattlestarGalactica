@@ -1,16 +1,35 @@
+const requireOption = require("../requireOption");
+
 module.exports = function(objectrepository) {
+  const Game = requireOption(objectrepository, "Game");
+  const Player = requireOption(objectrepository, "Player");
+
   return function(req, res, next) {
     if (objectrepository.adminLoggedInState && objectrepository.gameStarted) {
-      res.locals.users = [
-        { onClick: "loginPlayer('Player1')", name: "Player 1" },
-        { onClick: "loginPlayer('Player2')", name: "Player 2" },
-        { onClick: "loginPlayer('Player3')", name: "Player 3" },
-        { onClick: "loginPlayer('Player4')", name: "Player 4" },
-        { onClick: "loginPlayer('Player5')", name: "Player 5" }
-      ];
+      Game.findOne({}).exec((err, game) => {
+        if (err || !game) {
+          return next(err);
+        }
+
+        Player.find({ _id: { $in: game.players.map(p => p.player) } }).exec(
+          (err, players) => {
+            if (err || !players) {
+              return next(err);
+            }
+
+            res.locals.users = players.map(p => {
+              return {
+                onClick: `loginPlayer('${p._id}')`,
+                name: p.name
+              };
+            });
+            return next();
+          }
+        );
+      });
     } else {
       res.locals.users = [{ onClick: "loginAdmin()", name: "Admin" }];
+      next();
     }
-    next();
   };
 };

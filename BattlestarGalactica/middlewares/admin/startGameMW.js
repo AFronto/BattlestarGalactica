@@ -8,6 +8,7 @@ module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
   return function(req, res, next) {
     if (
       req.body.adminPlayer &&
+      !objectrepository.gameStarted &&
       !objectrepository.loggedInUsers.includes(req.body.adminPlayer) &&
       typeof req.body.players === typeof [] &&
       req.body.cardpacks !== undefined &&
@@ -49,12 +50,12 @@ module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
 
           game.save(function(err) {
             console.log(`Creating Game Error: ${err}`);
+            return res.redirect("/play-game");
           });
         });
       });
-
-      return res.redirect("/play-game");
+    } else {
+      return res.redirect("/manage-game");
     }
-    return res.redirect("/manage-game");
   };
 };
