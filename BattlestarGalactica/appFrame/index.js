@@ -26,13 +26,30 @@ const listCardsMW = require("../middlewares/cards/listCardsMW");
 const navBarMW = require("../middlewares/navBarMW");
 const renderMW = require("../middlewares/renderMW");
 
+const initDB = require("../config/initDB");
+
+const IdentityDeck = require("../models/IdentityDeck");
+const Card = require("../models/Card");
+
 module.exports = function(app) {
   const objRepo = {
     adminLoggedInState: false,
     gameStarted: false,
     loggedInUsers: [],
-    editedUser: undefined
+    editedUser: undefined,
+    IdentityDeck: IdentityDeck,
+    Card: Card
   };
+
+  IdentityDeck.find()
+    .populate("cards")
+    .exec((err, decks) => {
+      if (decks.length === 0) {
+        console.log("DB init sterted...");
+        initDB(objRepo);
+        console.log("Done!");
+      }
+    });
 
   function editUser(user) {
     objRepo.editedUser = user;
@@ -109,7 +126,12 @@ module.exports = function(app) {
   );
 
   // lists cards
-  app.get("/cards", listCardsMW(), navBarMW(0), renderMW(objRepo, "cards"));
+  app.get(
+    "/cards",
+    listCardsMW(objRepo),
+    navBarMW(0),
+    renderMW(objRepo, "cards")
+  );
 
   // shows the main game screen
   app.get(
