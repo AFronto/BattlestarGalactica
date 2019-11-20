@@ -3,6 +3,8 @@ const requireOption = require("../middlewares/requireOption");
 function initDB(objectrepository) {
   const IdentityDeck = requireOption(objectrepository, "IdentityDeck");
   const Card = requireOption(objectrepository, "Card");
+  const CardPack = requireOption(objectrepository, "CardPack");
+
   console.log("DB init sterted...");
   [
     {
@@ -141,6 +143,138 @@ function initDB(objectrepository) {
     });
     deck.save(function(err) {
       console.log(`Deck Error: ${err}`);
+    });
+  });
+
+  [
+    {
+      name: "3 Player Base",
+      cylonCards: 1,
+      humanCards: 5,
+      finalFiveCards: 0,
+      personalGoalCards: 0
+    },
+    {
+      name: "3 Player Personal Goal Easy Expansion",
+      cylonCards: 0,
+      humanCards: -2,
+      finalFiveCards: 0,
+      personalGoalCards: 2
+    },
+    {
+      name: "3 Player Personal Goal Hard Expansion",
+      cylonCards: 0,
+      humanCards: -4,
+      finalFiveCards: 0,
+      personalGoalCards: 4
+    },
+    {
+      name: "4 Player Base",
+      cylonCards: 1,
+      humanCards: 7,
+      finalFiveCards: 0,
+      personalGoalCards: 0
+    },
+    {
+      name: "4 Player Personal Goal Easy Expansion",
+      cylonCards: 0,
+      humanCards: -3,
+      finalFiveCards: 0,
+      personalGoalCards: 3
+    },
+    {
+      name: "4 Player Personal Goal Hard Expansion",
+      cylonCards: 0,
+      humanCards: -5,
+      finalFiveCards: 0,
+      personalGoalCards: 5
+    },
+    {
+      name: "5 Player Base",
+      cylonCards: 2,
+      humanCards: 8,
+      finalFiveCards: 0,
+      personalGoalCards: 0
+    },
+    {
+      name: "5 Player Personal Goal Easy Expansion",
+      cylonCards: 0,
+      humanCards: -3,
+      finalFiveCards: 0,
+      personalGoalCards: 3
+    },
+    {
+      name: "5 Player Personal Goal Medium Expansion",
+      cylonCards: 0,
+      humanCards: -3,
+      finalFiveCards: 0,
+      personalGoalCards: 5
+    },
+    {
+      name: "5 Player Personal Goal Hard Expansion",
+      cylonCards: 0,
+      humanCards: -5,
+      finalFiveCards: 0,
+      personalGoalCards: 8
+    },
+    {
+      name: "6 Player Base",
+      cylonCards: 2,
+      humanCards: 10,
+      finalFiveCards: 0,
+      personalGoalCards: 0
+    },
+    {
+      name: "6 Player Personal Goal Easy Expansion",
+      cylonCards: 0,
+      humanCards: -4,
+      finalFiveCards: 0,
+      personalGoalCards: 4
+    },
+    {
+      name: "6 Player Personal Goal Medium Expansion",
+      cylonCards: 0,
+      humanCards: -4,
+      finalFiveCards: 0,
+      personalGoalCards: 6
+    },
+    {
+      name: "6 Player Personal Goal Hard Expansion",
+      cylonCards: 0,
+      humanCards: -6,
+      finalFiveCards: 0,
+      personalGoalCards: 8
+    },
+    {
+      name: "5-6 Player Final Five Expansion",
+      cylonCards: 0,
+      humanCards: -2,
+      finalFiveCards: 2,
+      personalGoalCards: 0
+    },
+    {
+      name: "3-4 Player Final Five Expansion",
+      cylonCards: 0,
+      humanCards: -1,
+      finalFiveCards: 1,
+      personalGoalCards: 0
+    },
+    {
+      name: "Execution Expansion",
+      cylonCards: 0,
+      humanCards: 1,
+      finalFiveCards: 0,
+      personalGoalCards: 0
+    }
+  ].forEach(cardPack => {
+    var cdPack = new CardPack();
+    cdPack.name = cardPack.name;
+    cdPack.cylonCards = cardPack.cylonCards;
+    cdPack.humanCards = cardPack.humanCards;
+    cdPack.finalFiveCards = cardPack.finalFiveCards;
+    cdPack.personalGoalCards = cardPack.personalGoalCards;
+    cdPack.save(function(err) {
+      console.log(`CardPack Error: ${err}`);
     });
   });
 }
