@@ -66,5 +66,14 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script>
+      function logOut() {
+        fetch("http://localhost:3000/logout").then(response => {
+          if (response.redirected) {
+            window.location.href = response.url;
+          }
+        });
+      }
+    </script>
   </body>
 </html>

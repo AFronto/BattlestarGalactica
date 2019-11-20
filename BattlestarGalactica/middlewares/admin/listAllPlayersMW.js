@@ -1,12 +1,16 @@
+const requireOption = require("../requireOption");
+
 module.exports = function(objectrepository) {
+  const Player = requireOption(objectrepository, "Player");
+
   return function(req, res, next) {
-    res.locals.players = [
-      { id: "Player1", name: "Player 1" },
-      { id: "Player2", name: "Player 2" },
-      { id: "Player3", name: "Player 3" },
-      { id: "Player4", name: "Player 4" },
-      { id: "Player5", name: "Player 5" }
-    ];
-    next();
+    Player.find().exec((err, players) => {
+      if (err || !players) {
+        return next(err);
+      }
+
+      res.locals.players = players;
+      return next();
+    });
   };
 };

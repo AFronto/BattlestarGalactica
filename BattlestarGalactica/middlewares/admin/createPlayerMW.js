@@ -1,6 +1,14 @@
+const requireOption = require("../requireOption");
+
 module.exports = function(objectrepository) {
+  const Player = requireOption(objectrepository, "Player");
+
   return function(req, res, next) {
-    console.log("New player is created!");
+    var newPlayer = new Player();
+    newPlayer.name = "New Player";
+    newPlayer.save(function(err) {
+      console.log(`Creating Player Error: ${err}`);
+    });
     return res.redirect("/manage-players");
     next();
   };

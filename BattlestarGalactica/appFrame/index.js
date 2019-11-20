@@ -30,6 +30,7 @@ const initDB = require("../config/initDB");
 
 const IdentityDeck = require("../models/IdentityDeck");
 const Card = require("../models/Card");
+const Player = require("../models/Player");
 
 module.exports = function(app) {
   const objRepo = {
@@ -37,17 +38,17 @@ module.exports = function(app) {
     gameStarted: false,
     loggedInUsers: [],
     editedUser: undefined,
+
     IdentityDeck: IdentityDeck,
-    Card: Card
+    Card: Card,
+    Player: Player
   };
 
   IdentityDeck.find()
     .populate("cards")
     .exec((err, decks) => {
       if (decks.length === 0) {
-        console.log("DB init sterted...");
         initDB(objRepo);
-        console.log("Done!");
       }
     });
 

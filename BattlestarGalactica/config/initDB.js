@@ -3,7 +3,7 @@ const requireOption = require("../middlewares/requireOption");
 function initDB(objectrepository) {
   const IdentityDeck = requireOption(objectrepository, "IdentityDeck");
   const Card = requireOption(objectrepository, "Card");
-
+  console.log("DB init sterted...");
   [
     {
       title: "Cylon Identities",
@@ -31,6 +31,11 @@ function initDB(objectrepository) {
         {
           title: "Cylon 5",
           img: "./images/poly/Cylon5.jpg",
+          desc: "The really long discription of this loyalty card"
+        },
+        {
+          title: "Cylon 6",
+          img: "./images/poly/Cylon6.jpg",
           desc: "The really long discription of this loyalty card"
         }
       ]
@@ -67,6 +72,11 @@ function initDB(objectrepository) {
           title: "Final Five 4",
           img: "./images/poly/FinalFive4.jpg",
           desc: "The really long discription of this loyalty card"
+        },
+        {
+          title: "Final Five 5",
+          img: "./images/poly/FinalFive5.jpg",
+          desc: "The really long discription of this loyalty card"
         }
       ]
     },
@@ -92,6 +102,26 @@ function initDB(objectrepository) {
           title: "Personal Goal 4",
           img: "./images/poly/PersonalGoal4.jpg",
           desc: "The really long discription of this loyalty card"
+        },
+        {
+          title: "Personal Goal 5",
+          img: "./images/poly/PersonalGoal5.jpg",
+          desc: "The really long discription of this loyalty card"
+        },
+        {
+          title: "Personal Goal 6",
+          img: "./images/poly/PersonalGoal6.jpg",
+          desc: "The really long discription of this loyalty card"
+        },
+        {
+          title: "Personal Goal 7",
+          img: "./images/poly/PersonalGoal7.jpg",
+          desc: "The really long discription of this loyalty card"
+        },
+        {
+          title: "Personal Goal 8",
+          img: "./images/poly/PersonalGoal8.jpg",
+          desc: "The really long discription of this loyalty card"
         }
       ]
     }
@@ -105,12 +135,12 @@ function initDB(objectrepository) {
       card.img = idCard.img;
       card.desc = idCard.desc;
       card.save(function(err) {
-        console.log(err);
+        console.log(`Card Error: ${err}`);
       });
       deck.cards.push(card);
     });
     deck.save(function(err) {
-      console.log(err);
+      console.log(`Deck Error: ${err}`);
     });
   });
 }
