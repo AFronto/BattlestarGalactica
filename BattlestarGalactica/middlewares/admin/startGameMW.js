@@ -1,3 +1,4 @@
+var Q = require("q");
 const requireOption = require("../requireOption");
 
 module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
@@ -40,23 +41,28 @@ module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
             return next(err);
           }
 
+          var tasks = [];
+
           game.players = players.map(p => {
             var playerWithCards = new PlayerWithCards();
             playerWithCards.player = p;
-            playerWithCards.save(function(err) {
-              if (err !== null) {
-                console.log(`Creating PlayerWithCards Error: ${err}`);
-              }
-            });
+            tasks.push(playerWithCards.save());
             return playerWithCards;
           });
 
-          game.save(function(err) {
-            if (err !== null) {
-              console.log(`Creating Game Error: ${err}`);
+          Q.all(tasks).then(
+            function(results) {
+              game.save(function(err) {
+                if (err !== null) {
+                  console.log(`Creating Game Error: ${err}`);
+                }
+                return res.redirect("/play-game");
+              });
+            },
+            function(err) {
+              console.log(err);
             }
-            return res.redirect("/play-game");
-          });
+          );
         });
       });
     } else {

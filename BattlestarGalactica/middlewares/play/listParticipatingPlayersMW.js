@@ -53,12 +53,18 @@ module.exports = function(objectrepository) {
             return next(err);
           }
 
+          var itsMe = game.players.find(
+            p => p.player.id === req.session.player
+          );
           res.locals.myPlayer = {
-            name: req.session.player
-              ? game.players.find(p => p.player.id === req.session.player)
-                  .player.name
-              : undefined,
-            identityCards: []
+            name: req.session.player ? itsMe.player.name : undefined,
+            identityCards: itsMe.identityCards.map(idC => {
+              return {
+                title: idC.card.title,
+                img: idC.card.img,
+                desc: idC.card.desc
+              };
+            })
           };
 
           res.locals.otherPlayers = game.players
@@ -66,10 +72,19 @@ module.exports = function(objectrepository) {
             .map(p => {
               return {
                 name: p.player.name,
-                wannaSee: howManyCards.NOTHING,
+                wannaSee: itsMe.wannaSeeAll.some(wSA => wSA.id === p.player.id)
+                  ? howManyCards.ALL
+                  : itsMe.wannaSeeOne.some(wSO => wSO.id === p.player.id)
+                  ? howManyCards.RANDOM
+                  : howManyCards.NOTHING,
                 identityCards: p.identityCards.map(idC => {
                   if (idC.knownBy.some(kB => kB.id === req.session.player)) {
-                    return { ...idC.card, known: true };
+                    return {
+                      title: idC.card.title,
+                      img: idC.card.img,
+                      desc: idC.card.desc,
+                      known: true
+                    };
                   } else {
                     return { known: false };
                   }
