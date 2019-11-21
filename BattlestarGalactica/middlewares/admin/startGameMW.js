@@ -44,13 +44,17 @@ module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
             var playerWithCards = new PlayerWithCards();
             playerWithCards.player = p;
             playerWithCards.save(function(err) {
-              console.log(`Creating PlayerWithCards Error: ${err}`);
+              if (err !== null) {
+                console.log(`Creating PlayerWithCards Error: ${err}`);
+              }
             });
             return playerWithCards;
           });
 
           game.save(function(err) {
-            console.log(`Creating Game Error: ${err}`);
+            if (err !== null) {
+              console.log(`Creating Game Error: ${err}`);
+            }
             return res.redirect("/play-game");
           });
         });

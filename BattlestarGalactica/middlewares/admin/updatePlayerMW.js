@@ -13,7 +13,9 @@ module.exports = function(objectrepository, editUser) {
         }
         player.name = req.body.newName;
         player.save(function(err) {
-          console.log(`Update Player Error: ${err}`);
+          if (err !== null) {
+            console.log(`Update Player Error: ${err}`);
+          }
         });
       });
     } else {

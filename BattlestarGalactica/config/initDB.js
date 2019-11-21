@@ -137,12 +137,20 @@ function initDB(objectrepository) {
       card.img = idCard.img;
       card.desc = idCard.desc;
       card.save(function(err) {
-        console.log(`Card Error: ${err}`);
+        if (err !== null) {
+          console.log(`Card Error: ${err}`);
+        } else {
+          console.log(`Card ${card.title} saved successfully!`);
+        }
       });
       deck.cards.push(card);
     });
     deck.save(function(err) {
-      console.log(`Deck Error: ${err}`);
+      if (err !== null) {
+        console.log(`Deck Error: ${err}`);
+      } else {
+        console.log(`Deck ${deck.title} saved successfully!`);
+      }
     });
   });
 
@@ -274,7 +282,11 @@ function initDB(objectrepository) {
     cdPack.finalFiveCards = cardPack.finalFiveCards;
     cdPack.personalGoalCards = cardPack.personalGoalCards;
     cdPack.save(function(err) {
-      console.log(`CardPack Error: ${err}`);
+      if (err !== null) {
+        console.log(`CardPack Error: ${err}`);
+      } else {
+        console.log(`CardPack ${cdPack.name} saved successfully!`);
+      }
     });
   });
 }

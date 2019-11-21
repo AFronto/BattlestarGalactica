@@ -8,7 +8,9 @@ module.exports = function(objectrepository, editUser) {
       editUser(undefined);
     }
     Player.remove({ _id: req.params.player }).exec(err => {
-      console.log(`Deleting Player Error: ${err}`);
+      if (err !== null) {
+        console.log(`Deleting Player Error: ${err}`);
+      }
     });
 
     return res.redirect("/manage-players");

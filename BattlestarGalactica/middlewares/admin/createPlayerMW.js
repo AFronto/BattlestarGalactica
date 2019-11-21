@@ -7,7 +7,9 @@ module.exports = function(objectrepository) {
     var newPlayer = new Player();
     newPlayer.name = "New Player";
     newPlayer.save(function(err) {
-      console.log(`Creating Player Error: ${err}`);
+      if (err !== null) {
+        console.log(`Creating Player Error: ${err}`);
+      }
     });
     return res.redirect("/manage-players");
     next();
