@@ -33,6 +33,8 @@ const Card = require("../models/Card");
 const Player = require("../models/Player");
 const Game = require("../models/Game");
 const CardPack = require("../models/CardPack");
+const PlayerWithCards = require("../models/PlayerWithCards");
+const IdentityCard = require("../models/IdentityCard");
 
 module.exports = function(app) {
   const objRepo = {
@@ -45,7 +47,9 @@ module.exports = function(app) {
     Card: Card,
     Player: Player,
     Game: Game,
-    CardPack: CardPack
+    CardPack: CardPack,
+    PlayerWithCards: PlayerWithCards,
+    IdentityCard: IdentityCard
   };
 
   IdentityDeck.find()

@@ -4,6 +4,7 @@ module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
   const Game = requireOption(objectrepository, "Game");
   const CardPack = requireOption(objectrepository, "CardPack");
   const Player = requireOption(objectrepository, "Player");
+  const PlayerWithCards = requireOption(objectrepository, "PlayerWithCards");
 
   return function(req, res, next) {
     if (
@@ -40,12 +41,12 @@ module.exports = function(objectrepository, setGameStarted, addLoggedInUsers) {
           }
 
           game.players = players.map(p => {
-            return {
-              player: p,
-              wannaSeeOne: [],
-              wannaSeeAll: [],
-              identityCards: []
-            };
+            var playerWithCards = new PlayerWithCards();
+            playerWithCards.player = p;
+            playerWithCards.save(function(err) {
+              console.log(`Creating PlayerWithCards Error: ${err}`);
+            });
+            return playerWithCards;
           });
 
           game.save(function(err) {

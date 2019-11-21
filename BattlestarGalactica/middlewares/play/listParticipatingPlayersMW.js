@@ -2,7 +2,6 @@ const requireOption = require("../requireOption");
 
 module.exports = function(objectrepository) {
   const Game = requireOption(objectrepository, "Game");
-  const Player = requireOption(objectrepository, "Player");
 
   return function(req, res, next) {
     const howManyCards = {
@@ -11,39 +10,75 @@ module.exports = function(objectrepository) {
       NOTHING: "nothing"
     };
     if (objectrepository.gameStarted) {
-      Game.findOne({}).exec((err, game) => {
-        if (err || !game) {
-          res.locals.myPlayer = {};
-          return next(err);
-        }
-
-        Player.find({ _id: { $in: game.players.map(p => p.player) } }).exec(
-          (err, players) => {
-            if (err || !players) {
-              return next(err);
-            }
-
-            res.locals.myPlayer = {
-              name: req.session.player
-                ? players.find(p => p.id === req.session.player).name
-                : undefined,
-              identityCards: []
-            };
-
-            res.locals.otherPlayers = players
-              .filter(p => p.id !== req.session.player)
-              .map(p => {
-                return {
-                  name: p.name,
-                  wannaSee: howManyCards.NOTHING,
-                  identityCards: []
-                };
-              });
-
-            return next();
+      Game.findOne({})
+        .populate({
+          path: "players",
+          populate: {
+            path: "player"
           }
-        );
-      });
+        })
+        .populate({
+          path: "players",
+          populate: {
+            path: "wannaSeeAll"
+          }
+        })
+        .populate({
+          path: "players",
+          populate: {
+            path: "wannaSeeOne"
+          }
+        })
+        .populate({
+          path: "players",
+          populate: {
+            path: "identityCards",
+            populate: {
+              path: "knownBy"
+            }
+          }
+        })
+        .populate({
+          path: "players",
+          populate: {
+            path: "identityCards",
+            populate: {
+              path: "card"
+            }
+          }
+        })
+        .exec((err, game) => {
+          if (err || !game) {
+            res.locals.myPlayer = {};
+            return next(err);
+          }
+
+          res.locals.myPlayer = {
+            name: req.session.player
+              ? game.players.find(p => p.player.id === req.session.player)
+                  .player.name
+              : undefined,
+            identityCards: []
+          };
+
+          res.locals.otherPlayers = game.players
+            .filter(p => p.player.id !== req.session.player)
+            .map(p => {
+              return {
+                name: p.player.name,
+                wannaSee: howManyCards.NOTHING,
+                identityCards: p.identityCards.map(idC => {
+                  if (idC.knownBy.some(kB => kB.id === req.session.player)) {
+                    return { ...idC.card, known: true };
+                  } else {
+                    return { known: false };
+                  }
+                })
+              };
+            });
+
+          return next();
+        });
     } else {
       res.locals.myPlayer = {};
       next();
