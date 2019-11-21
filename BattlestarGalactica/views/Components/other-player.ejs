@@ -48,12 +48,18 @@
         <!-- Ask for cards -->
         <div class="col my-auto col-lg-4">
           <div class="mt-5 mb-2" style="width: 18rem;">
-            <button class="btn btn-info shadow btn-block">
+            <button
+              class="btn btn-info shadow btn-block"
+              onClick="askForReveal('one','<%= player.id %>')"
+            >
               Ask for a Loyalty card
             </button>
           </div>
           <div class="mb-2" style="width: 18rem;">
-            <button class="btn btn-success shadow btn-block">
+            <button
+              class="btn btn-success shadow btn-block"
+              onClick="askForReveal('all', '<%= player.id %>')"
+            >
               Ask for all the Loyalty cards
             </button>
           </div>

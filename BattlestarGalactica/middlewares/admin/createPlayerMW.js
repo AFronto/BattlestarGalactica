@@ -10,8 +10,7 @@ module.exports = function(objectrepository) {
       if (err !== null) {
         console.log(`Creating Player Error: ${err}`);
       }
+      return res.redirect("/manage-players");
     });
-    return res.redirect("/manage-players");
-    next();
   };
 };

@@ -71,6 +71,7 @@ module.exports = function(objectrepository) {
             .filter(p => p.player.id !== req.session.player)
             .map(p => {
               return {
+                id: p.player.id,
                 name: p.player.name,
                 wannaSee: itsMe.wannaSeeAll.some(wSA => wSA.id === p.player.id)
                   ? howManyCards.ALL

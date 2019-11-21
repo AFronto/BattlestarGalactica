@@ -170,12 +170,7 @@ module.exports = function(app) {
   );
 
   // requests a reveal from another player
-  app.post(
-    "/request-reveal",
-    authMW(objRepo),
-    requestRevealMW(objRepo),
-    renderMW(objRepo, "play-game")
-  );
+  app.post("/request-reveal", authMW(objRepo), requestRevealMW(objRepo));
 
   /////////////////////////////////// Admin only ////////////////////////////////////////////
 
