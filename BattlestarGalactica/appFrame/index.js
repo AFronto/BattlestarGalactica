@@ -162,12 +162,7 @@ module.exports = function(app) {
   );
 
   // reveals the card or cards of the player
-  app.post(
-    "/reveal",
-    authMW(objRepo),
-    revealMW(objRepo),
-    renderMW(objRepo, "play-game")
-  );
+  app.post("/reveal", authMW(objRepo), revealMW(objRepo));
 
   // requests a reveal from another player
   app.post("/request-reveal", authMW(objRepo), requestRevealMW(objRepo));

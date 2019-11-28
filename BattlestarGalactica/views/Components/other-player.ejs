@@ -21,10 +21,16 @@
               (player.wannaSee === 'random') {%>it<%}else{%>them<%}%>?
             </h5>
             <div class="mx-auto">
-              <button class="btn btn-info shadow mx-2">
+              <button
+                class="btn btn-info shadow mx-2"
+                onClick="reveal('<% if (player.wannaSee ==='random') {%>one<%}else{%>all<%}%>','<%= player.id %>',false)"
+              >
                 Show
               </button>
-              <button class="btn btn-danger shadow mx-2">
+              <button
+                class="btn btn-danger shadow mx-2"
+                onClick="reveal('<% if (player.wannaSee ==='random') {%>one<%}else{%>all<%}%>','<%= player.id %>',true)"
+              >
                 Decline
               </button>
             </div>

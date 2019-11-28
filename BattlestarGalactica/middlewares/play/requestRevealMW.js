@@ -23,25 +23,34 @@ module.exports = function(objectrepository) {
           path: "player"
         }
       })
+      .populate({
+        path: "players",
+        populate: {
+          path: "identityCards"
+        }
+      })
       .exec((err, game) => {
-        var itsMe = game.players.find(p => p.player.id === req.session.player);
         var updatedPlayer = game.players.find(
           p => p.player.id === req.body.fromWho
         );
+        if (updatedPlayer.identityCards.length > 0) {
+          var itsMe = game.players.find(
+            p => p.player.id === req.session.player
+          );
 
-        updatedPlayer.wannaSeeOne = updatedPlayer.wannaSeeOne.filter(
-          p => p.id !== req.session.player
-        );
-        updatedPlayer.wannaSeeAll = updatedPlayer.wannaSeeAll.filter(
-          p => p.id !== req.session.player
-        );
+          updatedPlayer.wannaSeeOne = updatedPlayer.wannaSeeOne.filter(
+            p => p.id !== req.session.player
+          );
+          updatedPlayer.wannaSeeAll = updatedPlayer.wannaSeeAll.filter(
+            p => p.id !== req.session.player
+          );
 
-        if (req.body.howMany === "one") {
-          updatedPlayer.wannaSeeOne.push(itsMe.player);
-        } else if (req.body.howMany === "all") {
-          updatedPlayer.wannaSeeAll.push(itsMe.player);
+          if (req.body.howMany === "one") {
+            updatedPlayer.wannaSeeOne.push(itsMe.player);
+          } else if (req.body.howMany === "all") {
+            updatedPlayer.wannaSeeAll.push(itsMe.player);
+          }
         }
-
         updatedPlayer.save(function(err) {
           if (err !== null) {
             console.log(`Request Reveal Error: ${err}`);
