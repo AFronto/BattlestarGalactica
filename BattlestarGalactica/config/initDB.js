@@ -13,32 +13,38 @@ function initDB(objectrepository) {
         {
           title: "Cylon 1",
           img: "./images/poly/Cylon1.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "cylon"
         },
         {
           title: "Cylon 2",
           img: "./images/poly/Cylon2.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "cylon"
         },
         {
           title: "Cylon 3",
           img: "./images/poly/Cylon3.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "cylon"
         },
         {
           title: "Cylon 4",
           img: "./images/poly/Cylon4.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "cylon"
         },
         {
           title: "Cylon 5",
           img: "./images/poly/Cylon5.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "cylon"
         },
         {
           title: "Cylon 6",
           img: "./images/poly/Cylon6.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "cylon"
         }
       ]
     },
@@ -48,7 +54,8 @@ function initDB(objectrepository) {
         {
           title: "Human",
           img: "./images/poly/Human.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "human"
         }
       ]
     },
@@ -58,27 +65,32 @@ function initDB(objectrepository) {
         {
           title: "Final Five 1",
           img: "./images/poly/FinalFive1.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "finalfive"
         },
         {
           title: "Final Five 2",
           img: "./images/poly/FinalFive2.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "finalfive"
         },
         {
           title: "Final Five 3",
           img: "./images/poly/FinalFive3.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "finalfive"
         },
         {
           title: "Final Five 4",
           img: "./images/poly/FinalFive4.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "finalfive"
         },
         {
           title: "Final Five 5",
           img: "./images/poly/FinalFive5.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "finalfive"
         }
       ]
     },
@@ -88,42 +100,50 @@ function initDB(objectrepository) {
         {
           title: "Personal Goal 1",
           img: "./images/poly/PersonalGoal1.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 2",
           img: "./images/poly/PersonalGoal2.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 3",
           img: "./images/poly/PersonalGoal3.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 4",
           img: "./images/poly/PersonalGoal4.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 5",
           img: "./images/poly/PersonalGoal5.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 6",
           img: "./images/poly/PersonalGoal6.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 7",
           img: "./images/poly/PersonalGoal7.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         },
         {
           title: "Personal Goal 8",
           img: "./images/poly/PersonalGoal8.jpg",
-          desc: "The really long discription of this loyalty card"
+          desc: "The really long discription of this loyalty card",
+          type: "personalgoal"
         }
       ]
     }
@@ -136,6 +156,7 @@ function initDB(objectrepository) {
       card.title = idCard.title;
       card.img = idCard.img;
       card.desc = idCard.desc;
+      card.type = idCard.type;
       card.save(function(err) {
         if (err !== null) {
           console.log(`Card Error: ${err}`);
@@ -165,14 +186,14 @@ function initDB(objectrepository) {
     {
       name: "3 Player Personal Goal Easy Expansion",
       cylonCards: 0,
-      humanCards: -2,
+      humanCards: -1,
       finalFiveCards: 0,
       personalGoalCards: 2
     },
     {
       name: "3 Player Personal Goal Hard Expansion",
       cylonCards: 0,
-      humanCards: -4,
+      humanCards: -3,
       finalFiveCards: 0,
       personalGoalCards: 4
     },
@@ -186,14 +207,14 @@ function initDB(objectrepository) {
     {
       name: "4 Player Personal Goal Easy Expansion",
       cylonCards: 0,
-      humanCards: -3,
+      humanCards: -2,
       finalFiveCards: 0,
       personalGoalCards: 3
     },
     {
       name: "4 Player Personal Goal Hard Expansion",
       cylonCards: 0,
-      humanCards: -5,
+      humanCards: -4,
       finalFiveCards: 0,
       personalGoalCards: 5
     },
@@ -207,21 +228,21 @@ function initDB(objectrepository) {
     {
       name: "5 Player Personal Goal Easy Expansion",
       cylonCards: 0,
-      humanCards: -3,
+      humanCards: -2,
       finalFiveCards: 0,
       personalGoalCards: 3
     },
     {
       name: "5 Player Personal Goal Medium Expansion",
       cylonCards: 0,
-      humanCards: -3,
+      humanCards: -2,
       finalFiveCards: 0,
       personalGoalCards: 5
     },
     {
       name: "5 Player Personal Goal Hard Expansion",
       cylonCards: 0,
-      humanCards: -5,
+      humanCards: -4,
       finalFiveCards: 0,
       personalGoalCards: 8
     },
@@ -235,21 +256,21 @@ function initDB(objectrepository) {
     {
       name: "6 Player Personal Goal Easy Expansion",
       cylonCards: 0,
-      humanCards: -4,
+      humanCards: -3,
       finalFiveCards: 0,
       personalGoalCards: 4
     },
     {
       name: "6 Player Personal Goal Medium Expansion",
       cylonCards: 0,
-      humanCards: -4,
+      humanCards: -3,
       finalFiveCards: 0,
       personalGoalCards: 6
     },
     {
       name: "6 Player Personal Goal Hard Expansion",
       cylonCards: 0,
-      humanCards: -6,
+      humanCards: -5,
       finalFiveCards: 0,
       personalGoalCards: 8
     },
@@ -268,7 +289,7 @@ function initDB(objectrepository) {
       personalGoalCards: 0
     },
     {
-      name: "Execution Expansion",
+      name: "Execution no Personal Goal Expansion",
       cylonCards: 0,
       humanCards: 1,
       finalFiveCards: 0,

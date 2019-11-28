@@ -60,11 +60,11 @@ module.exports = function(objectrepository) {
             );
 
             if (
-              (itsMe.identityCards[randomCard].card.title !== "Human" ||
+              (itsMe.identityCards[randomCard].card.type !== "human" ||
                 !itsMe.identityCards.some(
                   ic =>
                     ic.knownBy.some(k => k.id === req.body.toWho) &&
-                    ic.card.title === "Human"
+                    ic.card.type === "human"
                 )) &&
               !itsMe.identityCards[randomCard].knownBy.some(
                 k => k.id === req.body.toWho
