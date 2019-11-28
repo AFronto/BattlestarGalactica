@@ -17,6 +17,7 @@ const editPlayerMW = require("../middlewares/admin/editPlayerMW");
 const getEditedUserMW = require("../middlewares/admin/getEditedUserMW");
 
 const revealMW = require("../middlewares/play/revealMW");
+const revealToAllMW = require("../middlewares/play/revealToAllMW");
 const requestRevealMW = require("../middlewares/play/requestRevealMW");
 const executeMW = require("../middlewares/play/executeMW");
 const listParticipatingPlayersMW = require("../middlewares/play/listParticipatingPlayersMW");
@@ -69,6 +70,8 @@ module.exports = function(app) {
     objRepo.gameStarted = false;
     objRepo.loggedInUsers = [];
 
+    IdentityCard.remove({}).exec();
+    PlayerWithCards.remove({}).exec();
     Game.remove({}).exec();
   }
 
@@ -161,7 +164,10 @@ module.exports = function(app) {
     renderMW(objRepo, "play-game")
   );
 
-  // reveals the card or cards of the player
+  // reveals the card selected by the player
+  app.post("/reveal-to-all", authMW(objRepo), revealToAllMW(objRepo));
+
+  // reveals the card or cards of the player on request
   app.post("/reveal", authMW(objRepo), revealMW(objRepo));
 
   // requests a reveal from another player

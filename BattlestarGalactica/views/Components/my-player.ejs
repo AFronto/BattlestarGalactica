@@ -15,7 +15,10 @@
           <%-include('identity-card', { "card": card}) %>
 
           <div style="width: 18rem;">
-            <button class="btn mb-2 btn-info shadow btn-block">
+            <button
+              class="btn mb-2 btn-info shadow btn-block"
+              onClick="revealToAll('<%= card.id %>')"
+            >
               Reveal
             </button>
           </div>

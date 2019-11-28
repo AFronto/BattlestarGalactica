@@ -43,7 +43,6 @@ module.exports = function(objectrepository) {
       })
       .exec((err, game) => {
         var itsMe = game.players.find(p => p.player.id === req.session.player);
-        console.log("its me before: " + itsMe);
         itsMe.wannaSeeOne = itsMe.wannaSeeOne.filter(
           p => p.id !== req.body.toWho
         );
@@ -90,7 +89,6 @@ module.exports = function(objectrepository) {
               }
             });
           }
-          console.log("its me after:" + itsMe);
         }
         itsMe.save(function(err) {
           if (err !== null) {

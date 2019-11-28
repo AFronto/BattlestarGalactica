@@ -60,6 +60,7 @@ module.exports = function(objectrepository) {
             name: req.session.player ? itsMe.player.name : undefined,
             identityCards: itsMe.identityCards.map(idC => {
               return {
+                id: idC.id,
                 title: idC.card.title,
                 img: idC.card.img,
                 desc: idC.card.desc
