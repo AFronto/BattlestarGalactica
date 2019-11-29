@@ -22,7 +22,7 @@
     <!-- Navigation Bar -->
     <%- include('Components/navbar', { "links": links, "logOut": logOut}) %>
     <%if (!gameStarted) {%> <%- include('Components/game-setup', { "players":
-    players, "cardPacks":cardPacks }) %> <% } else {%> <%-
+    players, "cardPacks":cardPacks, "errors": errors}) %> <% } else {%> <%-
     include('Components/game-manage', { "players": players,
     "cardPacks":cardPacks }) %> <% } %>
 

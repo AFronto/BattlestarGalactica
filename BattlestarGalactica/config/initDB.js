@@ -289,7 +289,7 @@ function initDB(objectrepository) {
       personalGoalCards: 0
     },
     {
-      name: "Execution no Personal Goal Expansion",
+      name: "Execution Expansion",
       cylonCards: 0,
       humanCards: 1,
       finalFiveCards: 0,

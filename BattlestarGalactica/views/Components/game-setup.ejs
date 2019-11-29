@@ -27,7 +27,7 @@
       <h2 class="border-bottom py-2 border-dark">Players</h2>
 
       <div class="row p-3">
-        <div class="card shadow bg-secondary" style="width: 18rem;">
+        <div class="card shadow <% if(errors !== undefined && errors.type === "player") {%> border-danger <%}%> bg-secondary" style="width: 18rem;">
           <div class="card-header bg-primary ">
             Select the Players for the Game
           </div>
@@ -53,7 +53,7 @@
       <h2 class="border-bottom py-2 border-dark">Game Options</h2>
 
       <div class="row p-3">
-        <div class="card shadow bg-secondary" style="width: 18rem;">
+        <div class="card shadow <% if(errors !== undefined && errors.type === "cardpack") {%> border-danger <%}%> bg-secondary" style="width: 18rem;">
           <div class="card-header bg-primary ">
             Select the Card Packs for the Game
           </div>
@@ -74,6 +74,18 @@
         </div>
       </div>
     </div>
+
+    <% if(errors !== undefined) {%>
+
+    <div
+      class="d-flex flex-column justify-content-center"
+      style="width: 18rem;"
+    >
+      <a class="text-danger font-weight-bold text-center">
+        <%= errors.message %>
+      </a>
+    </div>
+    <%}%>
 
     <div class="row p-3">
       <div style="width: 18rem;">

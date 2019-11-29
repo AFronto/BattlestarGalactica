@@ -43,6 +43,7 @@ module.exports = function(app) {
     gameStarted: false,
     loggedInUsers: [],
     editedUser: undefined,
+    errors: undefined,
 
     IdentityDeck: IdentityDeck,
     Card: Card,
@@ -60,6 +61,10 @@ module.exports = function(app) {
         initDB(objRepo);
       }
     });
+
+  function errorsSet(errors) {
+    objRepo.errors = errors;
+  }
 
   function editUser(user) {
     objRepo.editedUser = user;
@@ -183,6 +188,8 @@ module.exports = function(app) {
     navBarMW(2),
     function(req, res, next) {
       res.locals.gameStarted = objRepo.gameStarted;
+      res.locals.errors = objRepo.errors;
+      objRepo.errors = undefined;
       next();
     },
     listAllPlayersMW(objRepo),
@@ -195,7 +202,7 @@ module.exports = function(app) {
     "/start-game",
     authMW(objRepo),
     adminRoleCheckMW(objRepo),
-    startGameMW(objRepo, setGameStarted, addLoggedInUsers)
+    startGameMW(objRepo, setGameStarted, addLoggedInUsers, errorsSet)
   );
 
   // deals cards for the players
