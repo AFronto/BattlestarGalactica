@@ -43,8 +43,10 @@
         <!-- UnKnown Card -->
         <% player.identityCards.forEach(function(card){ %>
         <div class="col col-lg-4">
-          <% if (card.known) {%> <%-include('identity-card', { "card": card}) %>
-          <%} else {%> <%-include('unknown-card') %> <%}%>
+          <% if (card.known) {%> <% if ( card.executed ) {%>
+          <%-include('executed-identity-card', { "card": card}) %> <%}else{%>
+          <%-include('identity-card', { "card": card}) %> <%}%> <%} else {%>
+          <%-include('unknown-card') %> <%}%>
         </div>
         <% }); %> <% if (player.identityCards.length<2) {%> <% for (var i=0;
         i<2-player.identityCards.length; i++) {%>

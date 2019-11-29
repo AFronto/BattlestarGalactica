@@ -11,6 +11,7 @@ module.exports = function(objectrepository) {
     };
     if (objectrepository.gameStarted) {
       Game.findOne({})
+        .populate("cardPacks")
         .populate({
           path: "players",
           populate: {
@@ -53,6 +54,15 @@ module.exports = function(objectrepository) {
             return next(err);
           }
 
+          res.locals.execution = game.cardPacks.some(
+            cP =>
+              cP.name.includes("Final Five Expansion") ||
+              cP.name.includes("Execution")
+          );
+
+          var otherPlayers = game.players.filter(
+            p => p.player.id !== req.session.player
+          );
           var itsMe = game.players.find(
             p => p.player.id === req.session.player
           );
@@ -61,6 +71,10 @@ module.exports = function(objectrepository) {
             identityCards: itsMe.identityCards.map(idC => {
               return {
                 id: idC.id,
+                revealed: otherPlayers.every(oP =>
+                  idC.knownBy.some(kBy => kBy.id === oP.player.id)
+                ),
+                executed: idC.executed,
                 title: idC.card.title,
                 img: idC.card.img,
                 desc: idC.card.desc
@@ -68,31 +82,30 @@ module.exports = function(objectrepository) {
             })
           };
 
-          res.locals.otherPlayers = game.players
-            .filter(p => p.player.id !== req.session.player)
-            .map(p => {
-              return {
-                id: p.player.id,
-                name: p.player.name,
-                wannaSee: itsMe.wannaSeeAll.some(wSA => wSA.id === p.player.id)
-                  ? howManyCards.ALL
-                  : itsMe.wannaSeeOne.some(wSO => wSO.id === p.player.id)
-                  ? howManyCards.RANDOM
-                  : howManyCards.NOTHING,
-                identityCards: p.identityCards.map(idC => {
-                  if (idC.knownBy.some(kB => kB.id === req.session.player)) {
-                    return {
-                      title: idC.card.title,
-                      img: idC.card.img,
-                      desc: idC.card.desc,
-                      known: true
-                    };
-                  } else {
-                    return { known: false };
-                  }
-                })
-              };
-            });
+          res.locals.otherPlayers = otherPlayers.map(p => {
+            return {
+              id: p.player.id,
+              name: p.player.name,
+              wannaSee: itsMe.wannaSeeAll.some(wSA => wSA.id === p.player.id)
+                ? howManyCards.ALL
+                : itsMe.wannaSeeOne.some(wSO => wSO.id === p.player.id)
+                ? howManyCards.RANDOM
+                : howManyCards.NOTHING,
+              identityCards: p.identityCards.map(idC => {
+                if (idC.knownBy.some(kB => kB.id === req.session.player)) {
+                  return {
+                    executed: idC.executed,
+                    title: idC.card.title,
+                    img: idC.card.img,
+                    desc: idC.card.desc,
+                    known: true
+                  };
+                } else {
+                  return { known: false };
+                }
+              })
+            };
+          });
 
           return next();
         });

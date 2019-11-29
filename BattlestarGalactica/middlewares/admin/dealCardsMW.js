@@ -1,20 +1,6 @@
+var dealHelper = require("../../helpers/dealHelper");
 var Q = require("q");
 const requireOption = require("../requireOption");
-
-function selectXCardFromDeck(deck, x, alreadyDealt) {
-  var ret = [];
-  while (x > 0) {
-    var card = deck[Math.floor(Math.random() * deck.length)];
-    if (
-      !ret.some(r => r.id === card.id) &&
-      !alreadyDealt.some(aD => aD.id === card.id)
-    ) {
-      ret.push(card);
-      x -= 1;
-    }
-  }
-  return ret;
-}
 
 module.exports = function(objectrepository) {
   const Game = requireOption(objectrepository, "Game");
@@ -42,45 +28,26 @@ module.exports = function(objectrepository) {
           finalFiveCards: 0,
           personalGoalCards: 0
         };
-        game.cardPacks.forEach(pack => {
-          cardsToDealFrom.humanCards += pack.humanCards;
-          cardsToDealFrom.cylonCards += pack.cylonCards;
-          cardsToDealFrom.finalFiveCards += pack.finalFiveCards;
-          cardsToDealFrom.personalGoalCards += pack.personalGoalCards;
-        });
 
-        var incCylon = [];
-        var incFinalFive = [];
-        var incPersonal = [];
-        game.players.forEach(player => {
-          player.identityCards.forEach(ic => {
-            if (ic.card.type === "human") {
-              cardsToDealFrom.humanCards -= 1;
-            } else if (ic.card.type === "cylon") {
-              cardsToDealFrom.cylonCards -= 1;
-              incCylon.push(ic.card);
-            } else if (ic.card.type === "finalfive") {
-              cardsToDealFrom.finalFiveCards -= 1;
-              incFinalFive.push(ic.card);
-            } else if (ic.card.type === "personalgoal") {
-              cardsToDealFrom.personalGoalCards -= 1;
-              incPersonal.push(ic.card);
-            }
-          });
-        });
+        cardsToDealFrom = dealHelper.initCardsDealtFromGamePacks(
+          cardsToDealFrom,
+          game.cardPacks
+        );
 
-        cardsToDealFrom.humanCards =
-          cardsToDealFrom.humanCards < 0 ? 0 : cardsToDealFrom.humanCards;
-        cardsToDealFrom.cylonCards =
-          cardsToDealFrom.cylonCards < 0 ? 0 : cardsToDealFrom.cylonCards;
-        cardsToDealFrom.finalFiveCards =
-          cardsToDealFrom.finalFiveCards < 0
-            ? 0
-            : cardsToDealFrom.finalFiveCards;
-        cardsToDealFrom.personalGoalCards =
-          cardsToDealFrom.personalGoalCards < 0
-            ? 0
-            : cardsToDealFrom.personalGoalCards;
+        var inc = {
+          Cylon: [],
+          FinalFive: [],
+          Personal: []
+        };
+        var packedData = dealHelper.initCardsDealtFromAlreadyDealtCards(
+          cardsToDealFrom,
+          game.players,
+          inc
+        );
+        inc = packedData.inc;
+        cardsToDealFrom = packedData.cardsToDealFrom;
+
+        cardsToDealFrom = dealHelper.dealWithNegatives(cardsToDealFrom);
 
         if (
           cardsToDealFrom.humanCards +
@@ -94,32 +61,10 @@ module.exports = function(objectrepository) {
             .exec((err, decks) => {
               var tasks = [];
 
-              var identityDecktoDealFrom = Array(
-                cardsToDealFrom.humanCards
-              ).fill(decks.find(d => d.title === "Human Identities").cards[0]);
-
-              identityDecktoDealFrom.push(
-                ...selectXCardFromDeck(
-                  decks.find(d => d.title === "Cylon Identities").cards,
-                  cardsToDealFrom.cylonCards,
-                  incCylon
-                )
-              );
-
-              identityDecktoDealFrom.push(
-                ...selectXCardFromDeck(
-                  decks.find(d => d.title === "Final Five Identities").cards,
-                  cardsToDealFrom.finalFiveCards,
-                  incFinalFive
-                )
-              );
-
-              identityDecktoDealFrom.push(
-                ...selectXCardFromDeck(
-                  decks.find(d => d.title === "Personal Goal Identities").cards,
-                  cardsToDealFrom.personalGoalCards,
-                  incPersonal
-                )
+              var identityDecktoDealFrom = dealHelper.buildIdentityDeckToDealFrom(
+                decks,
+                cardsToDealFrom,
+                inc
               );
 
               game.players.forEach(player => {
@@ -141,6 +86,7 @@ module.exports = function(objectrepository) {
                   );
                 }
 
+                identity.executed = false;
                 identity.knownBy = [];
                 identity.card = identityDecktoDealFrom[index];
                 player.identityCards.push(identity);

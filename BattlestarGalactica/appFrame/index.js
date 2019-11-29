@@ -75,6 +75,7 @@ module.exports = function(app) {
     objRepo.gameStarted = false;
     objRepo.loggedInUsers = [];
 
+    CardPack.remove({ name: "Executed Player" }).exec();
     IdentityCard.remove({}).exec();
     PlayerWithCards.remove({}).exec();
     Game.remove({}).exec();
@@ -162,12 +163,7 @@ module.exports = function(app) {
   );
 
   // executes the player this means he/she needs a new dealing
-  app.post(
-    "/execute",
-    authMW(objRepo),
-    executeMW(objRepo),
-    renderMW(objRepo, "play-game")
-  );
+  app.post("/execute", authMW(objRepo), executeMW(objRepo));
 
   // reveals the card selected by the player
   app.post("/reveal-to-all", authMW(objRepo), revealToAllMW(objRepo));

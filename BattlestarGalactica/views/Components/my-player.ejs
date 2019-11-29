@@ -12,8 +12,9 @@
       <div class="row my-2">
         <% player.identityCards.forEach(function(card){ %>
         <div class="col col-lg-4">
-          <%-include('identity-card', { "card": card}) %>
-
+          <% if ( card.executed ) {%> <%-include('executed-identity-card', {
+          "card": card}) %> <%}else{%> <%-include('identity-card', { "card":
+          card}) %> <%}%> <% if(!card.revealed){%>
           <div style="width: 18rem;">
             <button
               class="btn mb-2 btn-info shadow btn-block"
@@ -22,20 +23,23 @@
               Reveal
             </button>
           </div>
+          <%}%>
         </div>
         <% }); %> <% if (player.identityCards.length<2) {%> <% for (var i=0;
         i<2-player.identityCards.length; i++) {%>
         <div class="col my-auto col-lg-4"></div>
         <%}%> <%}%>
 
-        <!-- Ask for cards -->
+        <!-- Execute -->
+        <% if ( execution ) {%>
         <div class="col my-auto col-lg-4">
           <div class="mt-5 mb-2" style="width: 18rem;">
-            <button class="btn btn-danger shadow btn-block">
+            <button class="btn btn-danger shadow btn-block" onClick="execute()">
               Execute
             </button>
           </div>
         </div>
+        <%}%>
       </div>
     </div>
   </div>
